@@ -16,7 +16,6 @@ includes:
 - ../engine_locations.yml
 - ./tk-hiero-export.yml
 - ./tk-multi-breakdown.yml
-- ./tk-multi-breakdown2.yml
 - ./tk-multi-loader2.yml
 - ./tk-multi-publish2.yml
 - ./tk-multi-reviewsubmission.yml
@@ -63,12 +62,12 @@ settings.tk-nuke.hiero.project:
   spreadsheet_context_menu:
   - app_instance: tk-hiero-openinshotgun
     keep_in_menu: false
-    name: "Open in ShotGrid"
+    name: "Open in Shotgun"
     requires_selection: true
   timeline_context_menu:
   - app_instance: tk-hiero-openinshotgun
     keep_in_menu: false
-    name: "Open in ShotGrid"
+    name: "Open in Shotgun"
     requires_selection: true
   menu_favourites:
   - app_instance: tk-multi-workfiles2
@@ -98,9 +97,7 @@ settings.tk-nuke.asset_step:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
     tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
       location: "@apps.tk-multi-breakdown.location"
-    tk-multi-breakdown2: "@settings.tk-multi-breakdown2.nuke"
     tk-multi-loader2: "@settings.tk-multi-loader2.nuke"
     tk-multi-publish2: "@settings.tk-multi-publish2.nuke.asset_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.nuke.asset"
@@ -116,7 +113,6 @@ settings.tk-nuke.asset_step:
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
   - {app_instance: tk-multi-workfiles2, name: File Save...}
   - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-breakdown2, name: Scene Breakdown...}
   location: "@engines.tk-nuke.location"
 
 # project
@@ -158,7 +154,8 @@ settings.tk-nuke.shot:
     tk-nuke-quickreview:
       location: "@apps.tk-nuke-quickreview.location"
   menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-workfiles2, name: File Open..., hotkey: F1}
+
   location: "@engines.tk-nuke.location"
 
 # shot_step
@@ -166,12 +163,13 @@ settings.tk-nuke.shot_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-setframerange:
-      location: "@apps.tk-multi-setframerange.location"
     tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
       location: "@apps.tk-multi-breakdown.location"
-    tk-multi-breakdown2: "@settings.tk-multi-breakdown2.nuke"
+    tk-multi-setframerange:
+      menu_name: 'Sync Shot Info with Shotgun'
+      sg_in_frame_field: 'sg_head_in'
+      sg_out_frame_field: 'sg_tail_out'
+      location: "@apps.tk-multi-setframerange.location"
     tk-multi-loader2: "@settings.tk-multi-loader2.nuke"
     tk-multi-publish2: "@settings.tk-multi-publish2.nuke.shot_step"
     tk-multi-reviewsubmission: "@settings.tk-multi-reviewsubmission.nuke.shot"
@@ -183,11 +181,11 @@ settings.tk-nuke.shot_step:
       location: "@apps.tk-nuke-quickreview.location"
     tk-nuke-writenode: "@settings.tk-nuke-writenode.shot"
   menu_favourites:
-  - {app_instance: tk-multi-workfiles2, name: File Open...}
+  - {app_instance: tk-multi-workfiles2, name: File Open..., hotkey: F1}
   - {app_instance: tk-multi-snapshot, name: Snapshot...}
-  - {app_instance: tk-multi-workfiles2, name: File Save...}
-  - {app_instance: tk-multi-publish2, name: Publish...}
-  - {app_instance: tk-multi-breakdown2, name: Scene Breakdown...}
+  - {app_instance: tk-multi-workfiles2, name: File Save..., hotkey: "Ctrl+Shift+S"}
+  - {app_instance: tk-multi-publish2, name: Publish..., hotkey: F2}
+  - {app_instance: tk-multi-loader2, name: Load..., hotkey: F3}
   location: "@engines.tk-nuke.location"
 
 ################################################################################
@@ -269,12 +267,12 @@ settings.tk-nuke.nukestudio.project:
   spreadsheet_context_menu:
   - app_instance: tk-hiero-openinshotgun
     keep_in_menu: false
-    name: "Open in ShotGrid"
+    name: "Open in Shotgun"
     requires_selection: true
   timeline_context_menu:
   - app_instance: tk-hiero-openinshotgun
     keep_in_menu: false
-    name: "Open in ShotGrid"
+    name: "Open in Shotgun"
     requires_selection: true
   menu_favourites:
   - app_instance: tk-multi-workfiles2

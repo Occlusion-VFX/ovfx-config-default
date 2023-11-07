@@ -1,0 +1,1864 @@
+#! C:/Program Files/Nuke12.2v7/nuke-12.2.7.dll -nx
+version 12.2 v7
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="0" w="3775" h="1058" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1174" stretch="1"/>
+            <splitter orientation="2">
+                <split size="596"/>
+                <dock id="" activePageId="DAG.1" focus="true">
+                    <page id="DAG.1"/>
+                </dock>
+                <split size="420"/>
+                <dock id="" activePageId="Curve Editor.1">
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+            <split size="656"/>
+            <splitter orientation="2">
+                <split size="208"/>
+                <dock id="" activePageId="Progress.1">
+                    <page id="Progress.1"/>
+                    <page id="uk.co.thefoundry.backgroundrenderview.1"/>
+                </dock>
+                <split size="808"/>
+                <dock id="" activePageId="Properties.1">
+                    <page id="Properties.1"/>
+                </dock>
+            </splitter>
+            <split size="1893"/>
+            <dock id="" activePageId="Viewer.1">
+                <page id="Viewer.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name V:/Projects/config/test_remote/config/hooks/burnnode/OVFX_Burnin_Node.v002.nk
+ frame 1001
+ last_frame 420
+ lock_range true
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+Group {
+ inputs 0
+ name OccludeBurns
+ knobChanged "options = \[\n    \"shotCode\",\n    \"project\",\n     \"companySlate\",\n    \"dateSlate\",\n    \"fnSlate\",\n    \"frameCounter\",\n    'fancyFrame',\n    'taskVer',\n    'none',\n]\npositions = \[\n    \"topLeft\",\n    \"topMid\",\n    \"topRight\",\n    \"botLeft\",\n    \"botMid\",\n    \"botRight\",\n]\n\nfor pos in positions:\n    idx = int(nuke.thisNode().knob(pos).getValue())\n    nuke.toNode('burn_values').knob(pos).setValue(options\[idx])\n"
+ xpos 99
+ ypos 100
+ addUserKnob {20 slate l Slate}
+ addUserKnob {1 none l None -STARTLINE +INVISIBLE}
+ addUserKnob {22 updateSlate l "Update Slate" T "import os\n\nthisNode = nuke.thisNode().name()\ntopnode_name = nuke.tcl(\"full_name \[topnode \{\}]\".format(thisNode))\ninputNode = nuke.toNode(topnode_name)\n\ntry:\n    file = inputNode.knob('file').getValue()\n    filename = os.path.basename(file)\n    fn = filename.split('.')\[0]\n    shotcode = '_'.join(fn.split('_')\[:2])\n\n    nuke.thisNode().knob('fnSlate').setValue(fn)\n    nuke.thisNode().knob('shotCode').setValue(shotcode)\n    \n    projectDir = os.path.dirname(file)\n    dirName = projectDir.split('/')\[3]\n    nuke.thisNode().knob('project').setValue(dirName)\n\n    ff = inputNode.knob('first').getValue()\n    lf = inputNode.knob('last').getValue()\n    nuke.thisNode().knob('ffSlate').setValue(ff)\n    nuke.thisNode().knob('lfSlate').setValue(lf)\n\n    cs = inputNode\['colorspace'].value()\n    if cs\[:7] == 'default':\n        text = cs.split(\" \")\[-1]\n        update = text.replace(\"(\",\"\").replace(\")\",\"\")\n        nuke.thisNode().knob('colorspace').setValue(update)\n    else:\n        nuke.thisNode().knob('colorspace').setValue(cs)\n    \nexcept:\n    nuke.message('Top Node is not a Read Node.\\nCurrent top node \[ \{\} ]'.format(inputNode.name()))" +STARTLINE}
+ addUserKnob {1 project l "Project Name"}
+ project test_remote
+ addUserKnob {1 shotCode l "Shot Code" -STARTLINE}
+ shotCode test_001
+ addUserKnob {1 companySlate l Company}
+ companySlate "Occlusion VFX"
+ addUserKnob {1 dateSlate l Date}
+ dateSlate 07.11.2022
+ addUserKnob {22 date l "Update Date" -STARTLINE T "from datetime import datetime\ndt = datetime.now()\n\n# date = dt.strftime('%Y.%m.%d')\ndate = dt.strftime('%m.%d.%Y')\n\n\nnuke.thisNode().knob('dateSlate').setValue(date)\n"}
+ addUserKnob {1 fnSlate l Filename}
+ fnSlate test_001_comp_v022
+ addUserKnob {3 ffSlate l "First Frame"}
+ ffSlate 1
+ addUserKnob {3 lfSlate l "Last Frame" -STARTLINE}
+ lfSlate 30
+ addUserKnob {3 dur l Duration +INVISIBLE}
+ dur {{lfSlate-ffSlate+1}}
+ addUserKnob {1 colorspace l Colorspace}
+ colorspace linear
+ addUserKnob {1 artist l Artist}
+ artist "Jeff Au"
+ addUserKnob {1 task l Task}
+ task Comp
+ addUserKnob {3 version l Version -STARTLINE}
+ version 2
+ addUserKnob {3 VersionPadding l "Version padding" -STARTLINE}
+ VersionPadding 3
+ addUserKnob {1 submission l Submission}
+ submission Final
+ addUserKnob {1 scope l Scope}
+ scope "Match ref"
+ addUserKnob {41 message l Notes T Notes.message}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 config l Config}
+ addUserKnob {6 anamorphic l "Anamorphic Plate" +STARTLINE}
+ addUserKnob {6 burn_toggle l "Burn Ins" -STARTLINE}
+ burn_toggle true
+ addUserKnob {6 comp_slate l "Add Slate to comp render" +STARTLINE}
+ comp_slate true
+ addUserKnob {20 burnGroup l "Burn In Controls" n 1}
+ addUserKnob {4 topLeft l "Top Left" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ topLeft "Project Name"
+ addUserKnob {4 topMid l "Top Middle" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ topMid "Company Name"
+ addUserKnob {4 topRight l "Top Right" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ topRight Date
+ addUserKnob {4 botLeft l "Bottom Left" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ botLeft Task/Version
+ addUserKnob {4 botMid l "Bottom Middle" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ botMid None
+ addUserKnob {4 botRight l "Bottom Right" M {"Shot Code" "Project Name" "Company Name" Date Filename "Frame Counter" "Fancy Frame Counter" Task/Version None}}
+ botRight "Fancy Frame Counter"
+ addUserKnob {20 endGroup_3 n -1}
+ addUserKnob {20 valueConfig l "Fancy Frame/Task Ver Config" n 1}
+ valueConfig 0
+ addUserKnob {2 frameCounter}
+ frameCounter "\[format %04d \[frame]]"
+ addUserKnob {1 fancyFrame}
+ fancyFrame "\[format %04d \[value ffSlate]]-\[format %04d \[frame]]-\[format %04d \[value lfSlate]]"
+ addUserKnob {1 taskVer}
+ taskVer "\[value task], v\[format %0\[value VersionPadding]d \[value version]]"
+ addUserKnob {20 endGroup_1 n -1}
+ addUserKnob {20 reformat l "General Reformat Controls" n 1}
+ reformat 0
+ addUserKnob {41 format l "output format" T plate_reformat.format}
+ addUserKnob {41 resize l "resize type" T plate_reformat.resize}
+ addUserKnob {41 scale T reformat_repo.scale}
+ addUserKnob {6 reformat_enable l Enable t "Enable reformat controls to apply to all plates" +STARTLINE}
+ addUserKnob {20 endGroup_2 n -1}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 391
+  ypos -528
+ }
+ Reformat {
+  type "to box"
+  box_width {{width*2}}
+  box_height {{height}}
+  box_fixed true
+  resize distort
+  center false
+  name ana_reformat
+  xpos 391
+  ypos -504
+  disable {{anamorphic-1}}
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  crop false
+  name Crop4
+  xpos 391
+  ypos -480
+  disable {{"anamorphic ? 0 : 1"}}
+ }
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  box_width 1920
+  box_fixed true
+  resize distort
+  pbb true
+  name plate_reformat
+  xpos 391
+  ypos -456
+  disable {{"reformat_enable ? 0 : 1"}}
+ }
+ Transform {
+  center {{width/2} {height/2}}
+  name reformat_repo
+  label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+  xpos 391
+  ypos -432
+  disable {{"reformat_enable ? 0 : 1"}}
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop5
+  xpos 391
+  ypos -396
+ }
+ Dot {
+  name Dot4
+  xpos 425
+  ypos -345
+ }
+set N93b85c00 [stack 0]
+ NoOp {
+  name burnin_font
+  xpos 391
+  ypos -51
+  addUserKnob {20 User}
+  addUserKnob {7 scale l "" +STARTLINE}
+  scale {{.33*(width/1920)}}
+ }
+set N93b85800 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.topLeft] ]"
+  old_message {{116 101 115 116 95 114 101 109 111 116 101}
+    }
+  old_expression_markers {{0 10}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  transforms {{0 2}
+    }
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_color {0 0 0 0.5}
+  background_opacity 0.5
+  name top_left
+  xpos 391
+  ypos -27
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.topMid] ]"
+  old_message {{79 99 99 108 117 115 105 111 110 32 86 70 88}
+    }
+  old_expression_markers {{0 12}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  xjustify center
+  transforms {{0 2}
+    }
+  cursor_position 35
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_opacity 0.5
+  name top
+  xpos 391
+  ypos -3
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.topRight] ]"
+  old_message {{48 55 46 49 49 46 50 48 50 50}
+    }
+  old_expression_markers {{0 9}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  xjustify right
+  transforms {{0 2}
+    }
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_opacity 0.5
+  name top_right
+  xpos 391
+  ypos 21
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.botLeft] ]"
+  old_message {{67 111 109 112 44 32 118 48 48 50}
+    }
+  old_expression_markers {{0 9}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 36
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_color {0 0 0 0.5}
+  background_opacity 0.5
+  name bottom_left
+  xpos 391
+  ypos 45
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.botMid] ]"
+  old_expression_markers {{0 -1}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  xjustify center
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 35
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_opacity 0.5
+  name bottom
+  label "v\[format %04d \[value version]]"
+  xpos 391
+  ypos 69
+ }
+set N93b84400 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value ffSlate]-\[format %04d \[frame]]-\[value lfSlate]"
+  old_message {{49 45 48 48 49 53 45 52 50 48}
+    }
+  old_expression_markers {{0 0 2 5 7 9}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  xjustify right
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_opacity 0.5
+  name framecounter1
+  xpos 501
+  ypos 75
+ }
+push $N93b85c00
+ NoOp {
+  name Source
+  xpos 43
+  ypos -348
+  addUserKnob {20 User}
+  addUserKnob {12 dim}
+  dim {{width} {height}}
+ }
+set N93ae3800 [stack 0]
+ FrameHold {
+  first_frame {{root.first_frame}}
+  name FrameHold2
+  xpos 43
+  ypos -287
+ }
+set N93af0800 [stack 0]
+ Reformat {
+  type scale
+  scale 0.25
+  name Reformat2
+  xpos 153
+  ypos -281
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop1
+  xpos 153
+  ypos -257
+ }
+ NoOp {
+  name Slate_Dim
+  xpos 153
+  ypos -233
+  addUserKnob {20 User}
+  addUserKnob {12 dim}
+  dim {{width} {height}}
+ }
+ Transform {
+  translate {{((width*(1/Reformat2.scale))-width)*.85} {((height*(1/Reformat2.scale))-height)*.65}}
+  center {{width} 0}
+  black_outside false
+  name Still_Transform
+  label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+  xpos 153
+  ypos -143
+ }
+set N93ae2400 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{Source.dim.x}}
+  box_height {{Source.dim.y}}
+  resize none
+  center false
+  name Reformat1
+  xpos 153
+  ypos -107
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width {{width}}
+  box_height {{height}}
+  box_fixed true
+  box_pixel_aspect 2
+  resize distort
+  center false
+  name ana_reformat2
+  xpos -387
+  ypos -63
+  disable {{anamorphic-1 1}}
+ }
+push $N93b84400
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[value \[value burn_values.botRight] ]"
+  old_message {{48 48 48 49 45 49 48 48 49 45 48 48 51 48}
+    }
+  old_expression_markers {{0 13}
+    }
+  box {{width*.02} {height*.02} {width*.98} {height*.98}}
+  xjustify right
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 34
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{burnin_font.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1511}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  color 0.5
+  enable_background true
+  background_opacity 0.5
+  name framecounter
+  xpos 391
+  ypos 105
+ }
+push $N93b85c00
+ Dot {
+  name Dot5
+  xpos 679
+  ypos -345
+ }
+ Dot {
+  name Dot6
+  xpos 679
+  ypos 188
+ }
+ Switch {
+  inputs 2
+  which {{burn_toggle}}
+  name burn_toggle_switch
+  selected true
+  xpos 391
+  ypos 185
+ }
+push $N93ae3800
+ Dot {
+  name Dot1
+  xpos -171
+  ypos -345
+ }
+ Crop {
+  box {{width*.2} {height*.85} {width*.98} {height}}
+  reformat true
+  crop false
+  name Crop2
+  xpos -205
+  ypos -134
+ }
+ Group {
+  name ColorBars
+  xpos -205
+  ypos -110
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -470
+   ypos -502
+  }
+  Shuffle {
+   red black
+   green black
+   blue black
+   alpha black
+   name Shuffle2
+   label "\[value in]"
+   xpos -470
+   ypos -462
+  }
+set N93a83000 [stack 0]
+  Rectangle {
+   area {0 0 {160*(width/1498)} {20*(height/160)}}
+   name Rectangle1
+   xpos -470
+   ypos -260
+  }
+  Transform {
+   translate {{Rectangle1.area.r*1.05} {(height/6)*1.5 x1001 54}}
+   name Transform1
+   label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+   xpos -470
+   ypos -234
+  }
+set N93a82800 [stack 0]
+  Transform {
+   translate {0 {(height/5)}}
+   center {2048 1152}
+   name Transform4
+   label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+   xpos -360
+   ypos -234
+  }
+set N93a82400 [stack 0]
+  Transform {
+   translate {{width/9} 0}
+   center {960 540}
+   name Transform3
+   label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+   xpos -360
+   ypos -194
+  }
+  set C93a82000 [stack 0]
+set N93a82000 [stack 0]
+clone $C93a82000 {
+   xpos -360
+   ypos -154
+   selected false
+  }
+set N93a81c00 [stack 0]
+clone $C93a82000 {
+   xpos -360
+   ypos -114
+   selected false
+  }
+set N93a81800 [stack 0]
+clone $C93a82000 {
+   xpos -360
+   ypos -74
+   selected false
+  }
+set N93a81400 [stack 0]
+clone $C93a82000 {
+   xpos -360
+   ypos -34
+   selected false
+  }
+set N93a81000 [stack 0]
+clone $C93a82000 {
+   xpos -360
+   ypos 6
+   selected false
+  }
+  Constant {
+   inputs 0
+   channels rgb
+   color {0 0 0.5 0}
+   name Constant13
+   xpos 387
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle15
+   label "\[value in]"
+   xpos 387
+   ypos -407
+  }
+  Dot {
+   name Dot14
+   xpos 421
+   ypos 17
+  }
+push $N93a81000
+  Constant {
+   inputs 0
+   channels rgb
+   color {0.5 0 0 0}
+   name Constant12
+   xpos 277
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle14
+   label "\[value in]"
+   xpos 277
+   ypos -407
+  }
+  Dot {
+   name Dot13
+   xpos 311
+   ypos -23
+  }
+push $N93a81400
+  Constant {
+   inputs 0
+   channels rgb
+   color {0.5 0 0.5 0}
+   name Constant11
+   xpos 167
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle13
+   label "\[value in]"
+   xpos 167
+   ypos -407
+  }
+  Dot {
+   name Dot12
+   xpos 201
+   ypos -63
+  }
+push $N93a81800
+  Constant {
+   inputs 0
+   channels rgb
+   color {0 0.5 0 0}
+   name Constant10
+   xpos 57
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle12
+   label "\[value in]"
+   xpos 57
+   ypos -407
+  }
+  Dot {
+   name Dot11
+   xpos 91
+   ypos -103
+  }
+push $N93a81c00
+  Constant {
+   inputs 0
+   channels rgb
+   color {0 0.5 0.5 0}
+   name Constant9
+   xpos -53
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle11
+   label "\[value in]"
+   xpos -53
+   ypos -407
+  }
+  Dot {
+   name Dot10
+   xpos -19
+   ypos -143
+  }
+push $N93a82000
+  Constant {
+   inputs 0
+   channels rgb
+   color {0.5 0.5 0 0}
+   name Constant8
+   xpos -163
+   ypos -481
+  }
+  Shuffle {
+   alpha white
+   name Shuffle10
+   label "\[value in]"
+   xpos -163
+   ypos -407
+  }
+  Dot {
+   name Dot9
+   xpos -129
+   ypos -183
+  }
+push $N93a82400
+  Constant {
+   inputs 0
+   channels rgb
+   color 1
+   name Constant6
+   xpos -580
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle3
+   label "\[value in]"
+   xpos -580
+   ypos -387
+  }
+set Nd2f7b400 [stack 0]
+  Dot {
+   name Dot4
+   xpos -344
+   ypos -376
+  }
+push $N93a83000
+  Dot {
+   name Dot2
+   xpos -216
+   ypos -451
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge4
+   xpos -250
+   ypos -227
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge5
+   xpos -250
+   ypos -187
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge6
+   xpos -250
+   ypos -147
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge11
+   xpos -250
+   ypos -107
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge12
+   xpos -250
+   ypos -67
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge13
+   xpos -250
+   ypos -27
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge14
+   xpos -250
+   ypos 13
+  }
+  Dot {
+   name Dot15
+   xpos -216
+   ypos 129
+  }
+push $N93a82800
+clone $C93a82000 {
+   xpos -470
+   ypos -194
+   selected false
+  }
+set Nd2f78800 [stack 0]
+clone $C93a82000 {
+   xpos -470
+   ypos -154
+   selected false
+  }
+set Nd2f78400 [stack 0]
+clone $C93a82000 {
+   xpos -470
+   ypos -114
+   selected false
+  }
+set Nd2f1bc00 [stack 0]
+clone $C93a82000 {
+   xpos -470
+   ypos -74
+   selected false
+  }
+set Nd2f1b800 [stack 0]
+clone $C93a82000 {
+   xpos -470
+   ypos -34
+   selected false
+  }
+set Nd2f1b400 [stack 0]
+clone $C93a82000 {
+   xpos -470
+   ypos 6
+   selected false
+  }
+  Constant {
+   inputs 0
+   channels rgb
+   name Constant2
+   xpos -1240
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle9
+   label "\[value in]"
+   xpos -1240
+   ypos -387
+  }
+  Dot {
+   name Dot8
+   xpos -1206
+   ypos 17
+  }
+push $Nd2f1b400
+  Constant {
+   inputs 0
+   channels rgb
+   color 0.17
+   name Constant3
+   xpos -1128
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle8
+   label "\[value in]"
+   xpos -1128
+   ypos -387
+  }
+  Dot {
+   name Dot7
+   xpos -1094
+   ypos -23
+  }
+push $Nd2f1b800
+  Constant {
+   inputs 0
+   channels rgb
+   color 0.34
+   name Constant5
+   xpos -1020
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle7
+   label "\[value in]"
+   xpos -1020
+   ypos -387
+  }
+  Dot {
+   name Dot6
+   xpos -986
+   ypos -63
+  }
+push $Nd2f1bc00
+  Constant {
+   inputs 0
+   channels rgb
+   color 0.5
+   name Constant1
+   xpos -910
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle6
+   label "\[value in]"
+   xpos -910
+   ypos -387
+  }
+  Dot {
+   name Dot5
+   xpos -876
+   ypos -103
+  }
+push $Nd2f78400
+  Constant {
+   inputs 0
+   channels rgb
+   color 0.67
+   name Constant7
+   xpos -800
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle5
+   label "\[value in]"
+   xpos -800
+   ypos -387
+  }
+  Dot {
+   name Dot3
+   xpos -766
+   ypos -143
+  }
+push $Nd2f78800
+  Constant {
+   inputs 0
+   channels rgb
+   color 0.84
+   name Constant4
+   xpos -690
+   ypos -461
+  }
+  Shuffle {
+   alpha white
+   name Shuffle4
+   label "\[value in]"
+   xpos -690
+   ypos -387
+  }
+  Dot {
+   name Dot1
+   xpos -656
+   ypos -183
+  }
+push $N93a82800
+push $Nd2f7b400
+push $N93a83000
+  Merge2 {
+   inputs 2+1
+   name Merge1
+   xpos -580
+   ypos -227
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge2
+   xpos -580
+   ypos -187
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge3
+   xpos -580
+   ypos -147
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge7
+   xpos -580
+   ypos -107
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge8
+   xpos -580
+   ypos -67
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge9
+   xpos -580
+   ypos -27
+  }
+  Merge2 {
+   inputs 2+1
+   name Merge10
+   xpos -580
+   ypos 13
+  }
+  Merge2 {
+   inputs 2
+   name Merge15
+   xpos -580
+   ypos 125
+  }
+  Output {
+   name Output1
+   xpos -580
+   ypos 244
+  }
+  Viewer {
+   frame_range 1001-1063
+   fps 23.97602463
+   name Viewer1
+   xpos -407
+   ypos 100
+  }
+ end_group
+ Transform {
+  translate {{Crop2.box.x} {Crop2.box.y}}
+  black_outside false
+  name Transform1
+  label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+  xpos -205
+  ypos -62
+ }
+ Dot {
+  name Dot9
+  xpos -171
+  ypos 435
+ }
+ Read {
+  inputs 0
+  file_type png
+  file V:/Projects/config/FKS/config/icons/ovfx_review_logo.png
+  origset true
+  version 2
+  auto_alpha true
+  name logo
+  label "\n\n\[lindex \[split \[lindex \[split \[knob \[topnode].file] .] 0] /] 2]\n\[lindex \[split \[lindex \[split \[knob \[topnode].file] .] 0] /] end]\n\[value \[topnode].first] - \[value \[topnode].last]\n"
+  xpos -67
+  ypos -286
+ }
+ Reformat {
+  type "to box"
+  box_width {{Slate_Dim.dim.x*.66}}
+  scale 0.697
+  name Reformat4
+  xpos -67
+  ypos -142
+ }
+ NoOp {
+  name LogoDim
+  xpos -67
+  ypos -118
+  addUserKnob {20 User}
+  addUserKnob {12 dim}
+  dim {{width} {height}}
+ }
+ Premult {
+  name Premult1
+  xpos -67
+  ypos -94
+ }
+ Reformat {
+  type "to box"
+  box_width {{Source.dim.x}}
+  box_height {{Source.dim.y}}
+  box_pixel_aspect 2
+  resize none
+  center false
+  name Reformat6
+  xpos -67
+  ypos -70
+ }
+ Transform {
+  translate {{Still_Transform.translate.x+(Slate_Dim.dim.x-LogoDim.dim.x)} {(height*.25)-LogoDim.dim.y}}
+  scale {1 1}
+  center {{LogoDim.dim.x} 0}
+  name Transform2
+  label "T: \[value translate] | R: \[value rotate] | S: \[value scale]"
+  xpos -67
+  ypos -46
+ }
+push $N93ae2400
+push $N93af0800
+ Blur {
+  size {{"anamorphic ? 200 : 100"} 100}
+  name Blur1
+  label "size:\[value size]"
+  xpos 43
+  ypos -245
+ }
+ Multiply {
+  value 0.125
+  name Multiply1
+  label "value: \[value value]"
+  xpos 43
+  ypos -197
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 43
+  ypos -137
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 43
+  ypos -40
+ }
+ Dot {
+  name Dot2
+  xpos 77
+  ypos 21
+ }
+set Nd31eb800 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle1
+  label "\[value in]"
+  xpos -67
+  ypos 12
+ }
+ NoOp {
+  name Spacing
+  xpos -67
+  ypos 48
+  addUserKnob {20 User}
+  addUserKnob {7 anaScale l "" +STARTLINE}
+  anaScale {{"anamorphic ? .66 : 1"}}
+  addUserKnob {12 spacing l "" +STARTLINE}
+  spacing {{50*(width/1920)*anaScale} 0}
+ }
+ NoOp {
+  name slateFontScale
+  xpos -67
+  ypos 72
+  addUserKnob {20 User}
+  addUserKnob {7 anaScale l "" +STARTLINE}
+  anaScale {{"anamorphic ? .66 : 1"}}
+  addUserKnob {7 scale}
+  scale {{(.3*(width/1920))*anaScale}}
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value companySlate ]\n"
+  old_message {{79 99 99 108 117 115 105 111 110 32 86 70 88 10}
+    }
+  old_expression_markers {{0 12}
+    }
+  box {{width*.2} {Project_Name.box.y-Spacing.spacing.x} {width*.55} {Project_Name.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 22
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{slateFontScale.scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Vendor
+  xpos -67
+  ypos 151
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value dateSlate ]"
+  old_message {{48 55 46 49 49 46 50 48 50 50}
+    }
+  old_expression_markers {{0 9}
+    }
+  box {{width*.2} {Vendor.box.y-Spacing.spacing.x} {width*.55} {Vendor.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 19
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Date
+  xpos -67
+  ypos 177
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value fnSlate ]"
+  old_message {{116 101 115 116 95 48 48 49 95 99 111 109 112 95 118 48 50 50}
+    }
+  old_expression_markers {{0 17}
+    }
+  box {{width*.2} {Date.box.y-Spacing.spacing.x} {width*.6} {Date.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 17
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Filename
+  xpos -67
+  ypos 203
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value artist ]"
+  old_message {{74 101 102 102 32 65 117}
+    }
+  old_expression_markers {{0 6}
+    }
+  box {{width*.2} {Filename.box.y-Spacing.spacing.x} {width*.55} {Filename.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 16
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Artist
+  xpos -67
+  ypos 229
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value ffSlate ]-\[ value lfSlate ] \[ \[value dur ] ]"
+  old_message {{49 45 51 48 32 91 32 51 48 32 93}
+    }
+  old_expression_markers {{0 0 2 3 7 8}
+    }
+  box {{width*.2} {Artist.box.y-Spacing.spacing.x} {width*.55} {Artist.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 0 101 1 101 2 101 3 101 4 101 5 101 6 101 7 101 8 101 9 101 10 101}
+    }
+  tracking_values {{0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0}
+    }
+  baseline_values {{0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 8 0 9 0 10 0 0 -0.1 1 -0.1 2 -0.1 3 -0.1 4 -0.1 5 -0.1 6 -0.1 7 -0.1 8 -0.1 9 -0.1 10 -0.1}
+    }
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Frames
+  xpos -67
+  ypos 255
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value colorspace ]"
+  old_message {{108 105 110 101 97 114}
+    }
+  old_expression_markers {{0 5}
+    }
+  box {{width*.2} {Frames.box.y-Spacing.spacing.x} {width*.55} {Frames.box.y}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 20
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name MediaColor
+  xpos -67
+  ypos 279
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value task ], v\[ format %0\[value VersionPadding]d \[value version] ]"
+  old_message {{67 111 109 112 44 32 118 48 48 50}
+    }
+  old_expression_markers {{0 3 7 9}
+    }
+  box {{Still_Transform.translate.x} {Still_Transform.translate.y-(Spacing.spacing.x*1)} {Still_Transform.translate.x+Slate_Dim.dim.x} {Still_Transform.translate.y}}
+  xjustify right
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 36
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale*1.5}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Version
+  xpos -67
+  ypos 303
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value submission ]"
+  old_message {{70 105 110 97 108}
+    }
+  old_expression_markers {{0 4}
+    }
+  box {{Still_Transform.translate.x} {Version.box.y-Spacing.spacing.x} {Still_Transform.translate.x+Slate_Dim.dim.x} {parent.Version.box.y}}
+  xjustify right
+  yjustify center
+  transforms {{0 2}
+    }
+  cursor_position 20
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale*1.5}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Submit
+  xpos -67
+  ypos 327
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value scope ]"
+  old_message {{77 97 116 99 104 32 114 101 102}
+    }
+  old_expression_markers {{0 8}
+    }
+  box {{width*.2} {MediaColor.box.y-(Spacing.spacing.x*2)} {width*.55} {MediaColor.box.y-(Spacing.spacing.x)}}
+  transforms {{0 2}
+    }
+  cursor_position 15
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Scope
+  xpos -67
+  ypos 351
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Applied comp work to match ref. Submitting for Final"
+  old_message {{65 112 112 108 105 101 100 32 99 111 109 112 32 119 111 114 107 32 116 111 32 109 97 116 99 104 32 114 101 102 46 32 83 117 98 109 105 116 116 105 110 103 32 102 111 114 32 70 105 110 97 108}
+    }
+  box {{width*.2 889.6 x1003 819.2} 0 {width*.55 2446.4 x1003 2298} {Scope.box.y 1382 x1003 766.6666667}}
+  transforms {{0 2}
+    }
+  cursor_position 12
+  font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+  global_font_scale {{Vendor.global_font_scale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Notes
+  xpos -67
+  ypos 375
+ }
+push $Nd31eb800
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle2
+  label "\[value in]"
+  xpos 153
+  ypos 12
+ }
+ Rectangle {
+  area {{width*.18} 0 {Divider.area.x+(5*(width/1920))} {height}}
+  name Divider
+  xpos 153
+  ypos 48
+ }
+set Nd30f7800 [stack 0]
+ Dot {
+  name Dot3
+  xpos 187
+  ypos 112
+ }
+set Nd30f7400 [stack 0]
+push $Nd30f7800
+push $Nd30f7400
+push $Nd30f7800
+push $Nd31eb800
+ Merge2 {
+  inputs 2+1
+  operation overlay
+  name Merge1
+  xpos 43
+  ypos 109
+ }
+ Merge2 {
+  inputs 2+1
+  operation overlay
+  name Merge2
+  xpos 43
+  ypos 133
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value project ]"
+  old_message {{116 101 115 116 95 114 101 109 111 116 101}
+    }
+  old_expression_markers {{0 10}
+    }
+  box {{width*.2} {height*.75} {width} {height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 17
+  font {{ Segoe UI : Bold : segoeuib.ttf : 0 }}
+  global_font_scale {{.8*(width/1920)*slateFontScale.anaScale}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name Project_Name
+  xpos 43
+  ypos 230
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[ value shotCode ]"
+  old_message {{116 101 115 116 95 48 48 49}
+    }
+  old_expression_markers {{0 7}
+    }
+  box {{Still_Transform.translate.x} {parent.Project_Name.box.y} {Still_Transform.translate.x+Slate_Dim.dim.x} {Project_Name.box.t}}
+  xjustify right
+  yjustify bottom
+  transforms {{0 2}
+    }
+  baseline_values {{0 0 1 0 2 0 3 0 4 0 5 0 6 0 7 0 0 1 1 1 2 1 3 1 4 1 5 1 6 1 7 1}
+    }
+  cursor_position 18
+  font {{ Segoe UI : Bold : segoeuib.ttf : 0 }}
+  global_font_scale {{(Project_Name.global_font_scale*.5625)}}
+  center {960 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{960 540}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+    }
+  name ShotCode
+  xpos 43
+  ypos 254
+ }
+ Group {
+  name Labels
+  xpos 43
+  ypos 278
+  addUserKnob {20 User}
+  addUserKnob {7 fontScale l "" +STARTLINE}
+  fontScale {{parent.slateFontScale.scale}}
+  addUserKnob {41 spacing l "" +STARTLINE T Spacing.spacing}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos 391
+   ypos 176
+  }
+set Nd30f6000 [stack 0]
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Vendor
+   old_message {{86 101 110 100 111 114}
+     }
+   box {0 {Project_Name.box.y-Spacing.spacing.x} {width*.16} {Project_Name.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 6
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{fontScale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Vendor_Label
+   selected true
+   xpos 391
+   ypos 216
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Date
+   old_message {{68 97 116 101}
+     }
+   box {0 {Vendor_Label.box.y-Spacing.spacing.x} {width*.16} {Vendor_Label.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 4
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Date_Label
+   xpos 391
+   ypos 242
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Filename
+   old_message {{70 105 108 101 110 97 109 101}
+     }
+   box {0 {Date_Label.box.y-Spacing.spacing.x} {width*.16} {Date_Label.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 8
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Filename_Label
+   xpos 391
+   ypos 268
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Artist
+   old_message {{65 114 116 105 115 116}
+     }
+   box {0 {Filename_Label.box.y-Spacing.spacing.x} {width*.16} {Filename_Label.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 6
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Artist_Label
+   xpos 391
+   ypos 294
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Frames
+   old_message {{70 114 97 109 101 115}
+     }
+   box {0 {Artist_Label.box.y-Spacing.spacing.x} {width*.16} {Artist_Label.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 6
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Frames_Label
+   xpos 391
+   ypos 320
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Colorspace
+   old_message {{67 111 108 111 114 115 112 97 99 101}
+     }
+   box {0 {Frames_Label.box.y-Spacing.spacing.x} {width*.16} {Frames_Label.box.y}}
+   xjustify right
+   yjustify bottom
+   transforms {{0 2}
+     }
+   cursor_position 10
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name MediaColor_Label
+   xpos 391
+   ypos 344
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Scope
+   old_message {{83 99 111 112 101}
+     }
+   box {0 {box.t-Spacing.spacing.x} {width*.16} {MediaColor_Label.box.y-Spacing.spacing.x}}
+   xjustify right
+   transforms {{0 2}
+     }
+   cursor_position 5
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Scope_Label
+   xpos 391
+   ypos 374
+  }
+  Text2 {
+   font_size_toolbar 100
+   font_width_toolbar 100
+   font_height_toolbar 100
+   message Notes
+   old_message {{78 111 116 101 115}
+     }
+   box {0 0 {width*.16} {Scope_Label.box.y}}
+   xjustify right
+   transforms {{0 2}
+     }
+   cursor_position 5
+   font {{ Segoe UI : Regular : segoeui.ttf : 0 }}
+   global_font_scale {{Vendor_Label.global_font_scale}}
+   center {960 540}
+   cursor_initialised true
+   autofit_bbox false
+   initial_cursor_position {{960 540}
+     }
+   group_animations {{0} imported: 0 selected: items: "root transform/"}
+   animation_layers {{1 11 960 540 0 0 1 1 0 0 0 0}
+     }
+   name Notes_label
+   xpos 391
+   ypos 400
+  }
+  Output {
+   name Output1
+   xpos 391
+   ypos 446
+  }
+push $Nd30f6000
+  Dot {
+   name Dot1
+   xpos 551
+   ypos 180
+  }
+  NoOp {
+   name Spacing
+   xpos 517
+   ypos 229
+   addUserKnob {20 User}
+   addUserKnob {12 spacing l "" +STARTLINE}
+   spacing {{parent.parent.Spacing.spacing} {parent.parent.Spacing.spacing}}
+  }
+ end_group
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 43
+  ypos 375
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos 43
+  ypos 431
+ }
+ Switch {
+  inputs 2
+  which {{"\[python -execlocal first_frame\\ =\\ nuke.root()\\\[\\\"first_frame\\\"\\].value()\\ncurr_frame\\ =\\ nuke.root()\\\[\\\"frame\\\"\\].value()\\n\\nif\\ curr_frame\\ <\\ first_frame:\\n\\ \\ #\\ frames\\ before\\ the\\ start\\ of\\ the\\ sequence\\n\\ \\ #\\ switch\\ to\\ slate\\n\\ \\ ret\\ =\\ 0\\nelse:\\n\\ \\ #\\ play\\ back\\ sequence\\ with\\ burnins\\n\\ \\ ret\\ =\\ 1\\n\\n]" x4 0 x1004 0 x1005 1}}
+  name slate_or_burnin_chooser
+  label "Switches to the slate if curr_frame < start_frame for the current scene."
+  xpos 391
+  ypos 425
+ }
+ Reformat {
+  type "to box"
+  box_width {{width/2}}
+  box_height {{height}}
+  box_fixed true
+  resize distort
+  center false
+  name ana_reformat1
+  xpos 391
+  ypos 461
+  disable {{anamorphic-1 1}}
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop3
+  xpos 391
+  ypos 485
+ }
+ Output {
+  name Output1
+  xpos 391
+  ypos 509
+ }
+push $N93b85800
+ NoOp {
+  name burn_values
+  xpos 501
+  ypos -51
+  addUserKnob {20 burns l "Burn Ins"}
+  addUserKnob {1 topLeft l "Top Left"}
+  topLeft project
+  addUserKnob {1 topMid l "Top Middle"}
+  topMid companySlate
+  addUserKnob {1 topRight l "Top Right"}
+  topRight dateSlate
+  addUserKnob {1 botLeft l "Bottom Left"}
+  botLeft taskVer
+  addUserKnob {1 botMid l "Bottom Middle"}
+  botMid none
+  addUserKnob {1 botRight l "Bottom Right"}
+  botRight fancyFrame
+ }
+end_group

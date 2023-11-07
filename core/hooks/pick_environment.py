@@ -16,6 +16,7 @@ from tank import Hook
 
 
 class PickEnvironment(Hook):
+
     def execute(self, context, **kwargs):
         """
         The default implementation assumes there are three environments, called shot, asset
@@ -26,8 +27,6 @@ class PickEnvironment(Hook):
                 return "version"
             elif context.source_entity["type"] == "PublishedFile":
                 return "publishedfile"
-            elif context.source_entity["type"] == "Playlist":
-                return "playlist"
 
         if context.project is None:
             # Our context is completely empty. We're going into the site context.

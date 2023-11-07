@@ -1,0 +1,136 @@
+
+
+./install/app_store/tk-nuke-writenode/{version}/info.yml [ made SEQ tag optional for renders ]
+
+./install/app_store/tk-multi-launchapp/{version}/hooks/app_launch.py [ launch nuke with shell ]
+    - removed shell/cmd window, still launches with crash reporting and renderthreads off
+
+config/env/includes/settings/tk-multi-workfiles2.yml [ added line 33 for launch on startup ]
+
+./install/app_store/tk-multi-publish2/{version}/python/tk_multi_publish2/ui/dialog.py [window size]
+
+./install/app_store/tk_multi-workfiles2/{version}/python/tk_multi_workfiles/ui/file_open_form.py [window size]
+
+./install/app_store/tk-multi-setframerange/v5.0.0-OVFX
+    - hooks/frame_operations_tk-nuke.py
+    - app.py
+	- updated scripts to include extra parameters
+            - image width, image height, frame rate
+
+
+### Per Project Settings ###
+
+if editing a python script, we can use a master config file to configure the settings
+yaml files might be a little more interesting to edit
+
+probably use JSON as master config file, can natively edit in python
+
+templates.yml [ for folder templates, write nodes, etc ]
+    - lines 320-360~, for nuke templates
+        - contains file path templates for ShotgunWrite Node presets
+        - Sample:
+            nuke_shot_render_mov:
+                definition: '@shot_root/work/images/{Shot}_{Step}[_{name}][_{nuke.output}]_v{version}/{width}x{height}/mov/{Shot}_{Step}[_{name}][_{nuke.output}]_v{version}.mov'
+            - uses Keys, set earlier in file, surrounded by curly brackets
+            - keys surrounded by "[]" denote optional Keys
+    - there could be more to possibly change if we start incorporating more programs through the Shotgun Pipeline
+
+
+config/env/includes/settings/tk-nuke-writenode.yml [ add/remove for write node presets ]
+    -line 36 - onwards
+        - were we add render presets for the Shotgun Write Node
+          - Sample:
+                file_type: exr
+                name: Mono Exr, DWAA
+                proxy_publish_template:
+                proxy_render_template:
+                publish_template: nuke_shot_render_pub_mono
+                render_template: nuke_shot_render_mono
+                settings:
+                  datatype: 16 bit half
+                  compression: DWAA
+                  create_directories: true
+                  dw_compression_level: 45
+                  colorspace: Linear
+                tank_type: Rendered Image
+                tile_color: []
+                promote_write_knobs: []
+            - all entries must have unique name, as well as a 'publish_template' and 'render_template' to refer to from the templates.yml
+                - multiple presets can use the same template, would just render over previous render
+            - can use 'settings:' in the preset to set specific knobs when generating Write Node
+            - can also use 'promote_write_knobs' to add knobs to ShotgunWrite to change in script
+    - would need to get a list of all template names for config App/Program
+
+
+config/env/include/settings/tk-multi-reviewsubmission.yml [ to set default review mov height/width ]
+        - just add these lines to each step:
+            movie_width: size_in_int
+            movie_height: size_in_int
+    - otherwise, would need to change [ ./install/app_store/tk-multi-reviewsubmission/{version}/info.yml ]:
+        - line 53> default_value: 1920 [variable lives in movie_width]
+        - line 58> default_value: 1080 [variable lives in movie_height]
+
+
+./install/app_store/tk-multi-reviewsubmission/{version}/hooks/tk-nuke/render_media.py [ for mov codec/slate/burnin/LUT ]
+    - should move any changes to custom hook script in config/hooks
+    - for codec settings > __get_quicktime_settings() [line 245ish]
+        - here we check which nuke version is being used, then create a dictionary that holds the MOV settings to use when generating MOVs for review
+        - samples:
+            settings['meta_codec'] = 'apcn'
+            --------------
+            settings['meta_codec'] = AVdn
+            settings['dnxd_codec_profile'] = 'DNxHD 422 8-bit 220Mbit'
+            --------------
+            - the keys for the dictionary come from knobs in the Nuke Write Node
+            - as well as the values associated with those keys
+
+    - will probably be the most complicated thing to change adjust for slate/burnin/lut	
+        ./install/app_store/tk-multi-reviewsubmission/{version}/resources/ [ locations of burnin.nk and .ttf file for text nodes ]
+        - we can save these files anywhere technically, would just need to path to new location
+        - burnin.nk
+            - contains group node used to render MOV with burnins
+                - currently grabbed, set and executed in python 
+            - what better ways are there to create the burnins?
+                - currently uses shotgun environment from Nuke to grab the important details
+                    - project name, shot code, etc
+        - .ttf
+            - typeface/font file that default Shotgun implementation uses
+            - can easily just switch this out for standard font instead
+
+
+### Nuke ShotGrid Hotkeys ###
+config/env/includes/settings/tk-nuke.yml [ Changing hotkeys for ShotGrid functions ]
+    - can easily change hotkeys for ShotGrid functions in nuke settings yml file
+    - for shot_step changes can be made around lines 184-188
+    - still looking for a way to easily add back the hotkey for shotgrid write nodes
+
+
+### Need to move to Per Project Settings, currently Override Nuke Shortcuts is globally changed ###
+getting Write Node Profile from: config/hooks/OccludeScripts.py
+    - set variable [ writeProfile ] to preferred profile (ie 'Exr, Zip' )
+	- profile names from config/env/includes/settings/tk-nuke-writenode.yml
+ 
+
+./install/app_store/tk-multi-workfiles2/v0.13.0-OVFX/python/tk_multi_workfiles/actions/new_file_action.py [override_nuke_shortcuts]
+    - override_nuke_shortcuts()
+        - sets the default template to use when creating a ShotgunWrite node with Nuke's hotkey [W]
+    - syncRange()
+	- sets Nuke Script settings for:
+            - First Frame, Last Frame, Frame Rate, Format
+
+.\install\app_store\tk-nuke\v0.14.1\python\tk_nuke\__init__.py [override_nuke_shortcuts]
+    - override_nuke_shortcuts()
+        - sets the default template to use when creating a ShotgunWrite node with Nuke's hotkey [W]
+
+
+
+
+
+
+########## updated app/engine versions on 210910, info below may be outdated ##########
+
+
+***also need to look up how to get our shortcuts to load when launching a shot from the Shotgun Create App
+
+
+
