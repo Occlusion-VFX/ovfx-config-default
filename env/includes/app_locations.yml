@@ -23,13 +23,19 @@ includes:
 apps.tk-multi-about.location:
   type: app_store
   name: tk-multi-about
-  version: v0.4.0
+  version: v0.4.2
 
 # breakdown
 apps.tk-multi-breakdown.location:
   type: app_store
   name: tk-multi-breakdown
   version: v1.8.0
+
+# breakdown 2
+apps.tk-multibreakdown2.location
+  type: app_store
+  name: tk-multibreakdown2
+  version: v.0.2.8
 
 # demo
 apps.tk-multi-demo.location:
@@ -108,13 +114,19 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.13.0 ### -OVFX ### includes tailored code for our preferred workflow
+  version: v0.14.0 ### -OVFX ### includes tailored code for our preferred workflow
 
 # dev utils
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
   version: v1.2.0
+
+# bg publish
+apps.tk-multi-bg-publish.location:
+  type: app_store
+  name: tk-multi-bg-publish
+  version: v0.1.5
 
 # ---- Shotgun apps
 
@@ -135,6 +147,11 @@ apps.tk-shotgun-launchpublish.location:
   type: app_store
   name: tk-shotgun-launchpublish
   version: v0.5.0
+
+apps.tk-shotgun-launchvredreview.location:
+  type: app_store
+  name: tk-shotgun-launchvredreview
+  version: v1.1.4
 
 # ---- Hiero apps
 
