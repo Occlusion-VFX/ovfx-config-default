@@ -65,7 +65,7 @@ apps.tk-multi-pythonconsole.location:
 apps.tk-multi-reviewsubmission.location:
   type: app_store
   name: tk-multi-reviewsubmission
-  version: v1.2.0a-OVFX ### includes tailored code for our preferred workflow (custom slate with company logo)
+  version: v1.2.0a-OVFX
 
 # screeningroom
 apps.tk-multi-screeningroom.location:
@@ -77,7 +77,7 @@ apps.tk-multi-screeningroom.location:
 apps.tk-multi-setframerange.location:
   type: app_store
   name: tk-multi-setframerange
-  version: v0.5.0-OVFX ### includes tailored code for our preferred workflow
+  version: v0.5.0-OVFX
 
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
@@ -101,7 +101,7 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.13.0-OVFX ### includes tailored code for our preferred workflow
+  version: v0.13.0-OVFX
 
 # dev utils
 apps.tk-multi-devutils.location:
