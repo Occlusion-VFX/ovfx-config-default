@@ -66,8 +66,9 @@ apps.tk-multi-reviewsubmission.location:
 #   type: app_store
 #   name: tk-multi-reviewsubmission
 #   version: v1.2.0a-OVFX 
-  type: git
-  path: git@github.com:Occlusion-VFX/tk-multi-reviewsubmission.git
+  type: github_release
+  organization: Occlusion-VFX
+  repository: tk-multi-reviewsubmission
   version: v1.2.1.1-ovfx ### includes tailored code for our preferred workflow (custom slate with company logo)
 
 # screeningroom
