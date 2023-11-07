@@ -62,7 +62,7 @@ apps.tk-multi-pythonconsole.location:
   version: v1.3.0
 
 # reviewsubmission
-# apps.tk-multi-reviewsubmission.location:
+apps.tk-multi-reviewsubmission.location:
 #   type: app_store
 #   name: tk-multi-reviewsubmission
 #   version: v1.2.0a-OVFX 
@@ -77,11 +77,10 @@ apps.tk-multi-screeningroom.location:
   version: v0.5.0
 
 # setframerange
-# apps.tk-multi-setframerange.location:
+apps.tk-multi-setframerange.location:
 #   type: app_store
 #   name: tk-multi-setframerange
-#   version: v0.5.0-OVFX 
-apps.tk-multi-setframerange.location:
+#   version: v0.5.0-OVFX
   type: git
   path: git@github.com:Occlusion-VFX/tk-multi-setframerange.git
   version: v0.5.1-ovfx ### includes tailored code for our preferred workflow
