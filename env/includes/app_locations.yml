@@ -63,9 +63,13 @@ apps.tk-multi-pythonconsole.location:
 
 # reviewsubmission
 apps.tk-multi-reviewsubmission.location:
-  type: app_store
-  name: tk-multi-reviewsubmission
-  version: v1.2.0a-OVFX
+  # type: app_store
+  # name: tk-multi-reviewsubmission
+  # version: v1.2.0a-OVFX
+  type: github_release
+  organization: Occlusion-VFX
+  repository: tk-multi-reviewsubmission
+  version: v1.2.1.1-ovfx
 
 # screeningroom
 apps.tk-multi-screeningroom.location:
@@ -75,9 +79,13 @@ apps.tk-multi-screeningroom.location:
 
 # setframerange
 apps.tk-multi-setframerange.location:
-  type: app_store
-  name: tk-multi-setframerange
-  version: v0.5.0-OVFX
+  # type: app_store
+  # name: tk-multi-setframerange
+  # version: v0.5.0-OVFX
+  type: github_release
+  organization: Occlusion-VFX
+  repository: tk-multi-setframerange
+  version: v0.5.1-ovfx
 
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
@@ -101,7 +109,7 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.13.0-OVFX
+  version: v0.14.0
 
 # dev utils
 apps.tk-multi-devutils.location:
@@ -167,9 +175,13 @@ apps.tk-nuke-quickreview.location:
 
 # writenode
 apps.tk-nuke-writenode.location:
-  name: tk-nuke-writenode
-  type: app_store
-  version: v1.6.0
+  # name: tk-nuke-writenode
+  # type: app_store
+  # version: v1.6.0
+  type: github_release
+  organization: Occlusion-VFX
+  repository: tk-nuke-writenode
+  version: v1.6.0.1-ovfx
 
 # ---- Flame apps
 
