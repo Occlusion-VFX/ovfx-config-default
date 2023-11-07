@@ -67,7 +67,7 @@ apps.tk-multi-pythonconsole.location:
 #   name: tk-multi-reviewsubmission
 #   version: v1.2.0a-OVFX 
   type: git
-  path: git@github.com:Occlusion-VFX/tk-multi-reviewsubmission-ovfx.git
+  path: git@github.com:Occlusion-VFX/tk-multi-reviewsubmission.git
   version: v1.2.1.1-ovfx ### includes tailored code for our preferred workflow (custom slate with company logo)
 
 # screeningroom
@@ -83,7 +83,7 @@ apps.tk-multi-screeningroom.location:
 #   version: v0.5.0-OVFX 
 apps.tk-multi-setframerange.location:
   type: git
-  path: git@github.com:Occlusion-VFX/tk-multi-setframerange-ovfx.git
+  path: git@github.com:Occlusion-VFX/tk-multi-setframerange.git
   version: v0.5.1-ovfx ### includes tailored code for our preferred workflow
 
 # shotgun panel
@@ -108,7 +108,7 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.13.0-OVFX ### includes tailored code for our preferred workflow
+  version: v0.13.0 ### -OVFX ### includes tailored code for our preferred workflow
 
 # dev utils
 apps.tk-multi-devutils.location:
@@ -179,7 +179,7 @@ apps.tk-nuke-quickreview.location:
 #   version: v1.6.0
 apps.tk-nuke-writenode.location:
   type: git
-  path: git@github.com:Occlusion-VFX/tk-nuke-writenode-ovfx.git
+  path: git@github.com:Occlusion-VFX/tk-nuke-writenode.git
   version: v1.6.0.1-ovfx ### includes custom settings for our workflow
 
 # ---- Flame apps
