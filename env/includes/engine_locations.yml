@@ -19,11 +19,16 @@ engines.tk-3dsmaxplus.location:
   name: tk-3dsmaxplus
   version: v0.6.0
 
+engines.tk-3dsmax.location:
+  type: app_store
+  name: tk-3dsmax
+  version: v1.2.5
+
 # After Effects
 engines.tk-aftereffects.location:
   type: app_store
   name: tk-aftereffects
-  version: v0.3.0
+  version: v0.3.3
 
 # Desktop
 engines.tk-desktop.location:
@@ -71,7 +76,7 @@ engines.tk-motionbuilder.location:
 engines.tk-nuke.location:
   type: app_store
   name: tk-nuke
-  version: v0.14.1
+  version: v0.14.7
 
 # Photoshop
 engines.tk-photoshopcc.location:
@@ -91,4 +96,8 @@ engines.tk-shotgun.location:
   name: tk-shotgun
   version: v0.10.0
 
-
+# vred
+engines.tk-vred.location:
+  type: app_store
+  name: tk-vred
+  version: v3.0.2
