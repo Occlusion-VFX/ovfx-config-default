@@ -32,7 +32,7 @@ apps.tk-multi-breakdown.location:
   version: v1.8.0
 
 # breakdown 2
-apps.tk-multibreakdown2.location
+apps.tk-multibreakdown2.location:
   type: app_store
   name: tk-multibreakdown2
   version: v.0.2.8
