@@ -23,25 +23,13 @@ includes:
 apps.tk-multi-about.location:
   type: app_store
   name: tk-multi-about
-  version: v0.4.2
+  version: v0.4.0
 
 # breakdown
 apps.tk-multi-breakdown.location:
   type: app_store
   name: tk-multi-breakdown
   version: v1.8.0
-
-# breakdown 2
-apps.tk-multi-breakdown2.location:
-  type: app_store
-  name: tk-multi-breakdown2
-  version: v.0.2.8
-
-# data valadation
-apps.tk-multi-data-validation.location:
-  type: app_store
-  name: tk-multi-data-validation
-  version: v0.1.5
 
 # demo
 apps.tk-multi-demo.location:
@@ -75,13 +63,9 @@ apps.tk-multi-pythonconsole.location:
 
 # reviewsubmission
 apps.tk-multi-reviewsubmission.location:
-#   type: app_store
-#   name: tk-multi-reviewsubmission
-#   version: v1.2.0a-OVFX 
-  type: github_release
-  organization: Occlusion-VFX
-  repository: tk-multi-reviewsubmission
-  version: v1.2.1.1-ovfx ### includes tailored code for our preferred workflow (custom slate with company logo)
+  type: app_store
+  name: tk-multi-reviewsubmission
+  version: v1.2.0a-OVFX ### includes tailored code for our preferred workflow (custom slate with company logo)
 
 # screeningroom
 apps.tk-multi-screeningroom.location:
@@ -91,18 +75,15 @@ apps.tk-multi-screeningroom.location:
 
 # setframerange
 apps.tk-multi-setframerange.location:
-#   type: app_store
-#   name: tk-multi-setframerange
-#   version: v0.5.0-OVFX
-  type: git
-  path: git@github.com:Occlusion-VFX/tk-multi-setframerange.git
-  version: v0.5.1-ovfx ### includes tailored code for our preferred workflow
+  type: app_store
+  name: tk-multi-setframerange
+  version: v0.5.0-OVFX ### includes tailored code for our preferred workflow
 
 # shotgun panel
 apps.tk-multi-shotgunpanel.location:
   type: app_store
   name: tk-multi-shotgunpanel
-  version: v1.8.7
+  version: v1.8.0
 
 # snapshot
 apps.tk-multi-snapshot.location:
@@ -120,19 +101,13 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.14.0 ### -OVFX ### includes tailored code for our preferred workflow
+  version: v0.13.0-OVFX ### includes tailored code for our preferred workflow
 
 # dev utils
 apps.tk-multi-devutils.location:
   type: app_store
   name: tk-multi-devutils
   version: v1.2.0
-
-# bg publish
-apps.tk-multi-bg-publish.location:
-  type: app_store
-  name: tk-multi-bg-publish
-  version: v0.1.5
 
 # ---- Shotgun apps
 
@@ -153,11 +128,6 @@ apps.tk-shotgun-launchpublish.location:
   type: app_store
   name: tk-shotgun-launchpublish
   version: v0.5.0
-
-apps.tk-shotgun-launchvredreview.location:
-  type: app_store
-  name: tk-shotgun-launchvredreview
-  version: v1.1.4
 
 # ---- Hiero apps
 
@@ -196,14 +166,10 @@ apps.tk-nuke-quickreview.location:
   version: v1.2.0
 
 # writenode
-# apps.tk-nuke-writenode.location:
-#   name: tk-nuke-writenode
-#   type: app_store
-#   version: v1.6.0
 apps.tk-nuke-writenode.location:
-  type: git
-  path: git@github.com:Occlusion-VFX/tk-nuke-writenode.git
-  version: v1.6.0.1-ovfx ### includes custom settings for our workflow
+  name: tk-nuke-writenode
+  type: app_store
+  version: v1.6.0
 
 # ---- Flame apps
 
