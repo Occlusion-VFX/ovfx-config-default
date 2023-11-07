@@ -521,3 +521,123 @@ settings.tk-multi-workfiles2.motionbuilder.shot_step:
       hierarchy: [step]
   location: "@apps.tk-multi-workfiles2.location"
 
+################################################################################
+
+# ---- alias
+
+# project
+settings.tk-multi-workfiles2.alias:
+  launch_at_startup: true
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  my_tasks_filters:
+    - filter_operator: any
+      filters:
+        - [task_assignees.Group.users, is, '{context.user}']
+        - [task_assignees, is, '{context.user}']
+  hook_scene_operation: "{engine}/tk-multi-workfiles2/basic/scene_operation.py"
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_step
+settings.tk-multi-workfiles2.alias.asset_step:
+  template_publish: alias_asset_publish
+  template_publish_area: asset_publish_area_alias
+  template_work: alias_asset_work
+  template_work_area: asset_work_area_alias
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  my_tasks_filters:
+    - filter_operator: any
+      filters:
+        - [task_assignees.Group.users, is, '{context.user}']
+        - [task_assignees, is, '{context.user}']
+  hook_scene_operation: "{engine}/tk-multi-workfiles2/basic/scene_operation.py"
+  location: "@apps.tk-multi-workfiles2.location"
+
+################################################################################
+
+# ---- VRED
+
+# project
+settings.tk-multi-workfiles2.vred:
+  launch_at_startup: true
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  my_tasks_filters:
+    - filter_operator: any
+      filters:
+        - [task_assignees.Group.users, is, '{context.user}']
+        - [task_assignees, is, '{context.user}']
+  hook_scene_operation: "{engine}/tk-multi-workfiles2/basic/scene_operation.py"
+  location: "@apps.tk-multi-workfiles2.location"
+
+# asset_step
+settings.tk-multi-workfiles2.vred.asset_step:
+  template_publish: vred_asset_publish
+  template_publish_area: asset_publish_area_vred
+  template_work: vred_asset_work
+  template_work_area: asset_work_area_vred
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  my_tasks_filters:
+    - filter_operator: any
+      filters:
+        - [task_assignees.Group.users, is, '{context.user}']
+        - [task_assignees, is, '{context.user}']
+  hook_scene_operation: "{engine}/tk-multi-workfiles2/basic/scene_operation.py"
+  location: "@apps.tk-multi-workfiles2.location"
+
+################################################################################
+
+# ---- Mari
+
+settings.tk-multi-workfiles2.mari:
+  show_change_context: true
+  show_file_open: false
+  show_file_save: false
+  my_tasks_filters:
+   - [entity, type_is, Asset]
+   - [task_assignees, is, '{context.user}']
+  entities:
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  location: "@apps.tk-multi-workfiles2.location"
