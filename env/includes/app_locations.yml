@@ -102,7 +102,7 @@ apps.tk-multi-setframerange.location:
 apps.tk-multi-shotgunpanel.location:
   type: app_store
   name: tk-multi-shotgunpanel
-  version: v1.8.0
+  version: v1.8.7
 
 # snapshot
 apps.tk-multi-snapshot.location:
