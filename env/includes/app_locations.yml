@@ -109,7 +109,7 @@ apps.tk-multi-workfiles.location:
 apps.tk-multi-workfiles2.location:
   type: app_store
   name: tk-multi-workfiles2
-  version: v0.14.0
+  version: v0.13.0
 
 # dev utils
 apps.tk-multi-devutils.location:
