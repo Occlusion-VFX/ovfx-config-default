@@ -75,7 +75,7 @@ engines.tk-nuke.location:
   type: github_release
   organization: Occlusion-VFX
   repository: tk-nuke
-  version: v0.14.1.1
+  version: v0.14.1.2
 
 # Photoshop
 engines.tk-photoshopcc.location:
